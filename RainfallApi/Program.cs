@@ -1,5 +1,4 @@
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using RainfallApi.DocumentFilters;
 
@@ -26,6 +25,8 @@ builder.Services.AddSwaggerGen(options =>
     options.AddServer(new OpenApiServer { Url = "http://localhost:3000", Description = "Rainfall Api"});
     options.DocumentFilter<RootTagsDocumentFilter>();
     options.MapType<int>(() => new OpenApiSchema { Type = "number" });
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+    options.DescribeAllParametersInCamelCase();
 });
 
 var app = builder.Build();
