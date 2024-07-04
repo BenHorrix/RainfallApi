@@ -1,5 +1,7 @@
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using RainfallApi.DocumentFilters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,9 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://www.sorted.com"),
         }
     });
-    options.AddServer(new OpenApiServer() { Url = "http://localhost:3000", Description = "Rainfall Api"});
+    options.AddServer(new OpenApiServer { Url = "http://localhost:3000", Description = "Rainfall Api"});
+    options.DocumentFilter<RootTagsDocumentFilter>();
+    options.MapType<int>(() => new OpenApiSchema { Type = "number" });
 });
 
 var app = builder.Build();
