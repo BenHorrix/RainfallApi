@@ -10,7 +10,7 @@ namespace RainfallApi.Services.Implementations.Tests
         public async void RainfallMeasurementService_KnownStationWithId_ReturnsResults()
         {
             // Arrange
-            var stationIdWithKnownValues = 3680;
+            var stationIdWithKnownValues = "3680";
             var sut = new GovernmentRainfallMeasurementService();
 
             // Act
