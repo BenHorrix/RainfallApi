@@ -12,8 +12,8 @@ namespace RainfallApi.Controllers
     {
         private readonly ILogger<RainfallController> _logger;
         private readonly IRainfallMeasurementService _rainfallMeasurementService;
-        private const int countMin = 1;
-        private const int countMax = 100;
+        public const int CountMin = 1;
+        public const int CountMax = 100;
 
         public RainfallController(ILogger<RainfallController> logger, IRainfallMeasurementService rainfallMeasurementService)
         {
@@ -37,11 +37,11 @@ namespace RainfallApi.Controllers
         [ProducesResponseType<Error>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<Error>(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
-        public async Task<IActionResult> Readings(string stationId, [FromQuery][Range(countMin,countMax)] int count = 10)
+        public async Task<IActionResult> Readings(string stationId, [FromQuery][Range(CountMin,CountMax)] int count = 10)
         {
-            if(count < countMin || count > countMax)
+            if(count < CountMin || count > CountMax)
             {
-                return new BadRequestResult();
+                return new BadRequestObjectResult(Errors.RainfallMeasurementErrors.CountNotValid(count, CountMin, CountMax));
             }
             var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId);
             if(!result.Any())

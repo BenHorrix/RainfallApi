@@ -48,7 +48,9 @@ namespace RainfallApi.Tests
             var result = await sut.Readings("1", countToTry);
 
             // Assert
-            Assert.IsAssignableFrom<BadRequestResult>(result);
+            Assert.IsAssignableFrom<BadRequestObjectResult>(result);
+            Assert.Equivalent(((BadRequestObjectResult)result).Value, Errors.RainfallMeasurementErrors.CountNotValid(countToTry, RainfallController.CountMin, RainfallController.CountMax));
         }
+
     }
 }
