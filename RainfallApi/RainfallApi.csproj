@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RainfallApi.Models\RainfallApi.Models.csproj" />
+    <ProjectReference Include="..\RainfallApi.Services.Implementations\RainfallApi.Services.Implementations.csproj" />
     <ProjectReference Include="..\RainfallApi.Services\RainfallApi.Services.csproj" />
   </ItemGroup>
 
