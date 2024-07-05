@@ -37,6 +37,11 @@ namespace RainfallApi.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Readings(string stationId, [FromQuery][Range(1,100)] int count = 10)
         {
+            var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId);
+            if(!result.Any())
+            {
+                return new NotFoundResult();
+            }
             throw new NotImplementedException();
         }
     }
