@@ -15,7 +15,7 @@ namespace RainfallApi.Services.Implementations.RainfallMeasurement
             _httpClient = new HttpClient();
         }
 
-        public async Task<RainfallReading[]> GetMeasurementsForStation(string stationId)
+        public async Task<RainfallReading[]> GetMeasurementsForStation(string stationId, int count)
         {
             var readingsRestUrl = $"https://environment.data.gov.uk/flood-monitoring/id/stations/{stationId}/readings";
             var result = await _httpClient.GetAsync(readingsRestUrl);
@@ -25,7 +25,7 @@ namespace RainfallApi.Services.Implementations.RainfallMeasurement
             {
                 throw new UnexpectedGovernmentRainfallDataFormatException(resultBody, typeof(GovernmentRainfallMeasurement));
             }
-            return deserializedResult.Items.Select(i => new RainfallReading(i.DateTime, i.Value)).ToArray();
+            return deserializedResult.Items.Select(i => new RainfallReading(i.DateTime, i.Value)).Take(count).ToArray();
         }
     }
 }

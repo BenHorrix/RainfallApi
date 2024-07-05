@@ -12,12 +12,13 @@ namespace RainfallApi.Services.Implementations.Tests
             // Arrange
             var stationIdWithKnownValues = "3680";
             var sut = new GovernmentRainfallMeasurementService();
+            var expectedCount = 10;
 
             // Act
-            var result = await sut.GetMeasurementsForStation(stationIdWithKnownValues);
+            var result = await sut.GetMeasurementsForStation(stationIdWithKnownValues, expectedCount);
 
             // Assert
-            Assert.NotEmpty(result);
+            Assert.Equal(result.Length, expectedCount);
             Assert.True(result.All(r => r.DateMeasured != default), "Some readings in the returned collection had a value equal to the default value of date time, suggesting a deserialisation error");
         }
     }
