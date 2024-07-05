@@ -26,7 +26,7 @@ namespace RainfallApi.Tests
         public async void RainfallController_ReadingStationDoesNotExist_Gives404()
         {
             // Arrange
-            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(It.IsAny<string>())).Returns(Task.FromResult(Array.Empty<RainfallReading>()));
+            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(Array.Empty<RainfallReading>()));
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
             var mockStationId = "1";
 
@@ -59,7 +59,7 @@ namespace RainfallApi.Tests
         {
             // Arrange
             var expectedErrorMessage = "I represent any exception that could be thrown";
-            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(It.IsAny<string>())).ThrowsAsync(new Exception(expectedErrorMessage));
+            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(It.IsAny<string>(), It.IsAny<int>())).ThrowsAsync(new Exception(expectedErrorMessage));
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
 
             // Act
@@ -71,21 +71,30 @@ namespace RainfallApi.Tests
             Assert.Equivalent(((ObjectResult)result).Value, GenericErrors.UnexpectedError(expectedErrorMessage));
         }
 
-        [Fact]
-        public async void RainfallController_HasResultsForStation_GivesOkResultAndExpectedData()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(99)]
+        public async void RainfallController_HasResultsForStation_GivesOkResultAndExpectedData(int resultCount)
         {
             // Arrange
-            var expectedResultsForStation = new RainfallReading[] { new RainfallReading(DateTime.Now, 1.0m) };
+            var expectedResultsForStation = new List<RainfallReading>();
+            for(var i = 0; i < resultCount; i++)
+            {
+                expectedResultsForStation.Add(new RainfallReading(DateTime.Now.AddDays(-1 * i), i));
+            }
+            var expectedResultForStation = expectedResultsForStation.ToArray();
             var mockStationId = "1";
-            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(mockStationId)).Returns(Task.FromResult(expectedResultsForStation));
+            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(mockStationId, resultCount)).Returns(Task.FromResult(expectedResultForStation));
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
 
             // Act
-            var result = await sut.Readings(mockStationId, 50);
+            var result = await sut.Readings(mockStationId, resultCount);
+            var resultAsObjectResult = result as OkObjectResult;
 
             // Assert
-            Assert.IsAssignableFrom<OkObjectResult>(result);
-            Assert.Equivalent(((OkObjectResult)result).Value, new RainfallReadingResponse(expectedResultsForStation));
+            Assert.NotNull(resultAsObjectResult);
+            Assert.Equivalent(resultAsObjectResult.Value, new RainfallReadingResponse(expectedResultForStation));
+            Assert.Equal(((RainfallReadingResponse)resultAsObjectResult.Value).Readings.Length, resultCount);
         }
     }
 }

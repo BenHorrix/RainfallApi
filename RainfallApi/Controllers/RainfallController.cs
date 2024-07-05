@@ -46,7 +46,7 @@ namespace RainfallApi.Controllers
                 {
                     return new BadRequestObjectResult(RainfallMeasurementErrors.CountNotValid(count, CountMin, CountMax));
                 }
-                var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId);
+                var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId, count);
                 if (!result.Any())
                 {
                     return new NotFoundObjectResult(RainfallMeasurementErrors.StationNotFound(stationId));
