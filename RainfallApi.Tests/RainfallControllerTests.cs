@@ -77,7 +77,7 @@ namespace RainfallApi.Tests
             // Arrange
             var expectedResultsForStation = new RainfallReading[] { new RainfallReading(DateTime.Now, 1.0m) };
             var mockStationId = "1";
-            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(mockStationId)).ReturnsAsync(expectedResultsForStation);
+            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(mockStationId)).Returns(Task.FromResult(expectedResultsForStation));
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
 
             // Act
@@ -85,7 +85,7 @@ namespace RainfallApi.Tests
 
             // Assert
             Assert.IsAssignableFrom<OkObjectResult>(result);
-            Assert.Equivalent(((ObjectResult)result).Value, new RainfallReadingResponse(expectedResultsForStation));
+            Assert.Equivalent(((OkObjectResult)result).Value, new RainfallReadingResponse(expectedResultsForStation));
         }
     }
 }

@@ -51,6 +51,7 @@ namespace RainfallApi.Controllers
                 {
                     return new NotFoundObjectResult(RainfallMeasurementErrors.StationNotFound(stationId));
                 }
+                return new OkObjectResult(new RainfallReadingResponse(result));
             }
             catch(Exception ex)
             {
@@ -60,7 +61,6 @@ namespace RainfallApi.Controllers
                 };
                 return result;
             }
-            throw new NotImplementedException();
         }
     }
 }
