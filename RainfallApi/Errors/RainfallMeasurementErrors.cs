@@ -14,4 +14,12 @@ namespace RainfallApi.Errors
             return new Error([new ErrorDetail("count", $"The provided count {count} was less than {countMin} or more than {countMax}")], "An invalid count was provided");
         }
     }
+
+    public static class GenericErrors
+    {
+        public static Error UnexpectedError(string message)
+        {
+            return new Error([], $"An unexpected error occured with message: {message}");
+        }
+    }
 }

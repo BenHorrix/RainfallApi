@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RainfallApi.Controllers;
+using RainfallApi.Errors;
 using RainfallApi.Models.Error;
 using RainfallApi.Models.Rainfall;
 using RainfallApi.Services.RainfallMeasurement;
@@ -52,5 +53,21 @@ namespace RainfallApi.Tests
             Assert.Equivalent(((BadRequestObjectResult)result).Value, Errors.RainfallMeasurementErrors.CountNotValid(countToTry, RainfallController.CountMin, RainfallController.CountMax));
         }
 
+        [Fact]
+        public async void RainfallController_ThrowsErrorDuringAPICall_Gives500()
+        {
+            // Arrange
+            var expectedErrorMessage = "I represent any exception that could be thrown";
+            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(It.IsAny<string>())).ThrowsAsync(new Exception(expectedErrorMessage));
+            var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
+
+            // Act
+            var result = await sut.Readings("1", 50);
+
+            // Assert
+            Assert.IsAssignableFrom<ObjectResult>(result);
+            Assert.Equal(((ObjectResult)result).StatusCode, 500);
+            Assert.Equivalent(((ObjectResult)result).Value, GenericErrors.UnexpectedError(expectedErrorMessage));
+        }
     }
 }
