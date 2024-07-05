@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using RainfallApi.Models.Error;
 using RainfallApi.Models.Rainfall.Responses;
+using RainfallApi.Services.RainfallMeasurement;
 
 namespace RainfallApi.Controllers
 {
@@ -10,10 +11,12 @@ namespace RainfallApi.Controllers
     public class Rainfall : ControllerBase
     {
         private readonly ILogger<Rainfall> _logger;
+        private readonly IRainfallMeasurementService _rainfallMeasurementService;
 
-        public Rainfall(ILogger<Rainfall> logger)
+        public Rainfall(ILogger<Rainfall> logger, IRainfallMeasurementService rainfallMeasurementService)
         {
             _logger = logger;
+            _rainfallMeasurementService = rainfallMeasurementService;
         }
 
         /// <summary>

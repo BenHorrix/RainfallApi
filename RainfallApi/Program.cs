@@ -1,13 +1,17 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using RainfallApi.DocumentFilters;
+using RainfallApi.Services.Implementations.RainfallMeasurement;
+using RainfallApi.Services.RainfallMeasurement;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add dependency injection
+builder.Services.AddSingleton<IRainfallMeasurementService, GovernmentRainfallMeasurementService>();
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
