@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RainfallApi.Controllers;
+using RainfallApi.Models.Error;
 using RainfallApi.Models.Rainfall;
 using RainfallApi.Services.RainfallMeasurement;
 
@@ -25,12 +26,14 @@ namespace RainfallApi.Tests
             // Arrange
             _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(It.IsAny<string>())).Returns(Task.FromResult(Array.Empty<RainfallReading>()));
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
+            var mockStationId = "1";
 
             // Act
-            var result = await sut.Readings("1");
+            var result = await sut.Readings(mockStationId);
 
             // Assert
-            Assert.IsAssignableFrom<NotFoundResult>(result);
+            Assert.IsAssignableFrom<NotFoundObjectResult>(result);
+            Assert.Equivalent(((NotFoundObjectResult)result).Value, Errors.RainfallMeasurementErrors.StationNotFound(mockStationId));
         }
 
         [Theory]

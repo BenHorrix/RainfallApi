@@ -46,7 +46,7 @@ namespace RainfallApi.Controllers
             var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId);
             if(!result.Any())
             {
-                return new NotFoundResult();
+                return new NotFoundObjectResult(Errors.RainfallMeasurementErrors.StationNotFound(stationId));
             }
             throw new NotImplementedException();
         }
