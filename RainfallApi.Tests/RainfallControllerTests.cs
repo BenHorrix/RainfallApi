@@ -6,6 +6,7 @@ using RainfallApi.Controllers;
 using RainfallApi.Errors;
 using RainfallApi.Models.Error;
 using RainfallApi.Models.Rainfall;
+using RainfallApi.Models.Rainfall.Responses;
 using RainfallApi.Services.RainfallMeasurement;
 
 namespace RainfallApi.Tests
@@ -68,6 +69,23 @@ namespace RainfallApi.Tests
             Assert.IsAssignableFrom<ObjectResult>(result);
             Assert.Equal(((ObjectResult)result).StatusCode, 500);
             Assert.Equivalent(((ObjectResult)result).Value, GenericErrors.UnexpectedError(expectedErrorMessage));
+        }
+
+        [Fact]
+        public async void RainfallController_HasResultsForStation_GivesOkResultAndExpectedData()
+        {
+            // Arrange
+            var expectedResultsForStation = new RainfallReading[] { new RainfallReading(DateTime.Now, 1.0m) };
+            var mockStationId = "1";
+            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(mockStationId)).ReturnsAsync(expectedResultsForStation);
+            var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
+
+            // Act
+            var result = await sut.Readings(mockStationId, 50);
+
+            // Assert
+            Assert.IsAssignableFrom<OkObjectResult>(result);
+            Assert.Equivalent(((ObjectResult)result).Value, new RainfallReadingResponse(expectedResultsForStation));
         }
     }
 }
