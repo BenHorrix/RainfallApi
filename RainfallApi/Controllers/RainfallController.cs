@@ -8,12 +8,12 @@ namespace RainfallApi.Controllers
 {
     [ApiController]
     [Route("rainfall/id/{stationId}")]
-    public class Rainfall : ControllerBase
+    public class RainfallController : ControllerBase
     {
-        private readonly ILogger<Rainfall> _logger;
+        private readonly ILogger<RainfallController> _logger;
         private readonly IRainfallMeasurementService _rainfallMeasurementService;
 
-        public Rainfall(ILogger<Rainfall> logger, IRainfallMeasurementService rainfallMeasurementService)
+        public RainfallController(ILogger<RainfallController> logger, IRainfallMeasurementService rainfallMeasurementService)
         {
             _logger = logger;
             _rainfallMeasurementService = rainfallMeasurementService;

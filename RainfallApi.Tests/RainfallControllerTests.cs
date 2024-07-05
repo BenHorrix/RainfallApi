@@ -1,0 +1,36 @@
+using Castle.Core.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using RainfallApi.Controllers;
+using RainfallApi.Models.Rainfall;
+using RainfallApi.Services.RainfallMeasurement;
+
+namespace RainfallApi.Tests
+{
+    public class RainfallControllerTests
+    {
+        private readonly Mock<IRainfallMeasurementService> _mockMeasurementService;
+        private readonly Mock<ILogger<RainfallController>> _mockLogger;
+
+        public RainfallControllerTests()
+        {
+            _mockMeasurementService = new Mock<IRainfallMeasurementService>();
+            _mockLogger = new Mock<ILogger<RainfallController>>();
+        }
+
+        [Fact]
+        public async void RainfallController_ReadingStationDoesNotExist_Gives404()
+        {
+            // Arrange
+            _mockMeasurementService.Setup(m => m.GetMeasurementsForStation(It.IsAny<string>())).Returns(Task.FromResult(Array.Empty<RainfallReading>()));
+            var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
+
+            // Act
+            var result = await sut.Readings("1");
+
+            // Assert
+            Assert.IsAssignableFrom<NotFoundResult>(result);
+        }
+    }
+}

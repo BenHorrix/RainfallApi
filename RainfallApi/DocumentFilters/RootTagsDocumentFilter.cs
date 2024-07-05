@@ -7,7 +7,7 @@ namespace RainfallApi.DocumentFilters
     {
         public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
-            var rainfallTagName = "Rainfall";
+            var rainfallTagName = "RainfallController";
             var hasRainfallTag = swaggerDoc.Tags.Any(t => t.Name == rainfallTagName);
             if (!hasRainfallTag)
             {

@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "1.0",
-        Title = "Rainfall Api",
+        Title = "RainfallController Api",
         Description = "An API which provides rainfall reading data",
         Contact = new OpenApiContact
         {
@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://www.sorted.com"),
         }
     });
-    options.AddServer(new OpenApiServer { Url = "http://localhost:3000", Description = "Rainfall Api"});
+    options.AddServer(new OpenApiServer { Url = "http://localhost:3000", Description = "RainfallController Api"});
     options.DocumentFilter<RootTagsDocumentFilter>();
     options.MapType<int>(() => new OpenApiSchema { Type = "number" });
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
