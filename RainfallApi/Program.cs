@@ -33,7 +33,21 @@ builder.Services.AddSwaggerGen(options =>
     options.DescribeAllParametersInCamelCase();
 });
 
+var corsPolicyKey = "TechTestAllowAllOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicyKey,
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyMethod();
+            policy.AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
+
+//app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -42,7 +56,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(corsPolicyKey);
 
 app.UseAuthorization();
 
