@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using RainfallApi.Errors;
 using RainfallApi.Models.Error;
 using RainfallApi.Models.Rainfall.Responses;
 using RainfallApi.Services.RainfallMeasurement;
@@ -39,14 +40,25 @@ namespace RainfallApi.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Readings(string stationId, [FromQuery][Range(CountMin,CountMax)] int count = 10)
         {
-            if(count < CountMin || count > CountMax)
+            try
             {
-                return new BadRequestObjectResult(Errors.RainfallMeasurementErrors.CountNotValid(count, CountMin, CountMax));
+                if (count < CountMin || count > CountMax)
+                {
+                    return new BadRequestObjectResult(RainfallMeasurementErrors.CountNotValid(count, CountMin, CountMax));
+                }
+                var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId);
+                if (!result.Any())
+                {
+                    return new NotFoundObjectResult(RainfallMeasurementErrors.StationNotFound(stationId));
+                }
             }
-            var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId);
-            if(!result.Any())
+            catch(Exception ex)
             {
-                return new NotFoundObjectResult(Errors.RainfallMeasurementErrors.StationNotFound(stationId));
+                var result = new ObjectResult(GenericErrors.UnexpectedError(ex.Message))
+                {
+                    StatusCode = 500
+                };
+                return result;
             }
             throw new NotImplementedException();
         }
