@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using RainfallApi.Models.Error;
-using RainfallApi.Models.Rainfall;
 using RainfallApi.Models.Rainfall.Responses;
 
 namespace RainfallApi.Controllers
