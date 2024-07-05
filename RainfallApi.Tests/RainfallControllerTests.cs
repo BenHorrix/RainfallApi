@@ -32,5 +32,20 @@ namespace RainfallApi.Tests
             // Assert
             Assert.IsAssignableFrom<NotFoundResult>(result);
         }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(101)]
+        public async void RainfallController_CountIsOutOfRange_Gives400(int countToTry)
+        {
+            // Arrange
+            var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
+
+            // Act
+            var result = await sut.Readings("1", countToTry);
+
+            // Assert
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
     }
 }
