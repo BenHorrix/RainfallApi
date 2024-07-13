@@ -16,5 +16,16 @@ namespace RainfallApi.Models.Rainfall
         [Range(CountMin, CountMax)]
         [DefaultValue(1)]
         public int Count { get; set; }
+
+        public RainfallReadingsRequest(string stationId, int count)
+        {
+            StationId = stationId;
+            Count = count;
+        }
+
+        public RainfallReadingsRequest()
+        {
+
+        }
     }
 }

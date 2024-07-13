@@ -31,7 +31,7 @@ namespace RainfallApi.Tests
             var mockStationId = "1";
 
             // Act
-            var result = await sut.Readings(mockStationId);
+            var result = await sut.Readings(new RainfallReadingsRequest(mockStationId, 1));
 
             // Assert
             Assert.IsAssignableFrom<NotFoundObjectResult>(result);
@@ -47,7 +47,7 @@ namespace RainfallApi.Tests
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
 
             // Act
-            var result = await sut.Readings("1", countToTry);
+            var result = await sut.Readings(new RainfallReadingsRequest("1", countToTry));
 
             // Assert
             Assert.IsAssignableFrom<BadRequestObjectResult>(result);
@@ -63,7 +63,7 @@ namespace RainfallApi.Tests
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
 
             // Act
-            var result = await sut.Readings("1", 50);
+            var result = await sut.Readings(new RainfallReadingsRequest("1", 50));
 
             // Assert
             Assert.IsAssignableFrom<ObjectResult>(result);
@@ -88,7 +88,7 @@ namespace RainfallApi.Tests
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
 
             // Act
-            var result = await sut.Readings(mockStationId, resultCount);
+            var result = await sut.Readings(new RainfallReadingsRequest(mockStationId, resultCount));
             var resultAsObjectResult = result as OkObjectResult;
 
             // Assert
