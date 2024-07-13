@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.OpenApi.Models;
 using RainfallApi.DocumentFilters;
 using RainfallApi.Services.Implementations.RainfallMeasurement;
@@ -16,6 +17,7 @@ builder.Services.AddControllers(options =>
     options.ReturnHttpNotAcceptable = true;
 });
 
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
