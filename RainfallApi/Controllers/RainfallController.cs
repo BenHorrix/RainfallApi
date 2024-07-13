@@ -8,6 +8,7 @@ using RainfallApi.Services.RainfallMeasurement;
 
 namespace RainfallApi.Controllers
 {
+    [ApiController]
     [Route("rainfall/id/{stationId}")]
     public class RainfallController : ControllerBase
     {

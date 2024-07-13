@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.OpenApi.Models;
 using RainfallApi.DocumentFilters;
@@ -15,6 +16,10 @@ builder.Services.AddSingleton<IRainfallMeasurementService, GovernmentRainfallMea
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
+});
+
+builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
+    apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
 });
 
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
