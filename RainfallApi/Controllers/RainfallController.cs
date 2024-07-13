@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using RainfallApi.Errors;
 using RainfallApi.Models.Error;
+using RainfallApi.Models.Rainfall;
 using RainfallApi.Models.Rainfall.Responses;
 using RainfallApi.Services.RainfallMeasurement;
 
@@ -13,8 +14,6 @@ namespace RainfallApi.Controllers
     {
         private readonly ILogger<RainfallController> _logger;
         private readonly IRainfallMeasurementService _rainfallMeasurementService;
-        public const int CountMin = 1;
-        public const int CountMax = 100;
 
         public RainfallController(ILogger<RainfallController> logger, IRainfallMeasurementService rainfallMeasurementService)
         {
@@ -38,18 +37,18 @@ namespace RainfallApi.Controllers
         [ProducesResponseType<Error>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<Error>(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
-        public async Task<IActionResult> Readings(string stationId, [FromQuery][Range(CountMin,CountMax)] int count = 10)
+        public async Task<IActionResult> Readings(RainfallReadingsRequest request)
         {
             try
             {
-                if (count < CountMin || count > CountMax)
+                if (request.Count < RainfallReadingsRequest.CountMin || request.Count > RainfallReadingsRequest.CountMax)
                 {
-                    return new BadRequestObjectResult(RainfallMeasurementErrors.CountNotValid(count, CountMin, CountMax));
+                    return new BadRequestObjectResult(RainfallMeasurementErrors.CountNotValid(request.Count, RainfallReadingsRequest.CountMin, RainfallReadingsRequest.CountMax));
                 }
-                var result = await _rainfallMeasurementService.GetMeasurementsForStation(stationId, count);
+                var result = await _rainfallMeasurementService.GetMeasurementsForStation(request.StationId, request.Count);
                 if (!result.Any())
                 {
-                    return new NotFoundObjectResult(RainfallMeasurementErrors.StationNotFound(stationId));
+                    return new NotFoundObjectResult(RainfallMeasurementErrors.StationNotFound(request.StationId));
                 }
                 return new OkObjectResult(new RainfallReadingResponse(result));
             }

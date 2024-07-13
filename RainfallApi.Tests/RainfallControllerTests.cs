@@ -51,7 +51,7 @@ namespace RainfallApi.Tests
 
             // Assert
             Assert.IsAssignableFrom<BadRequestObjectResult>(result);
-            Assert.Equivalent(((BadRequestObjectResult)result).Value, Errors.RainfallMeasurementErrors.CountNotValid(countToTry, RainfallController.CountMin, RainfallController.CountMax));
+            Assert.Equivalent(((BadRequestObjectResult)result).Value, Errors.RainfallMeasurementErrors.CountNotValid(countToTry, RainfallReadingsRequest.CountMin, RainfallReadingsRequest.CountMax));
         }
 
         [Fact]
