@@ -27,5 +27,10 @@ namespace RainfallApi.Services.Implementations.RainfallMeasurement
             }
             return deserializedResult.Items.Select(i => new RainfallReading(i.DateTime, i.Value)).Take(count).ToArray();
         }
+
+        public Task<RainfallReading[]> GetRainfallReadingsSince(int sinceHours)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

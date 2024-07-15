@@ -102,10 +102,23 @@ namespace RainfallApi.Tests
         {
             // Arrange
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
-            var hoursSince
+            var mockHoursSince = 2;
+            var expectedReadingCount = 4;
+            var mockReadingsSinceResponse = new List<RainfallReading>();
+            for(var i = 0; i < expectedReadingCount; i++)
+            {
+                mockReadingsSinceResponse.Add(new RainfallReading(DateTime.UtcNow, i));
+            }
+            var mockReadingsAsArray = mockReadingsSinceResponse.ToArray();
+            _mockMeasurementService.Setup(m => m.GetRainfallReadingsSince(mockHoursSince)).ReturnsAsync(mockReadingsAsArray);
 
             // Act
-            var result = await sut.Summary()
+            var result = await sut.Summary(mockHoursSince);
+
+            // Assert
+            Assert.IsAssignableFrom<OkObjectResult>(result);
+            var resultAsObjectResult = result as OkObjectResult;
+            Assert.Equal(mockReadingsAsArray, ((OkObjectResult)result).Value);
         }
     }
 }

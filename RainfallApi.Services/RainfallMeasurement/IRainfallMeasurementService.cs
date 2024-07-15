@@ -8,5 +8,11 @@ namespace RainfallApi.Services.RainfallMeasurement
     public interface IRainfallMeasurementService
     {
         Task<RainfallReading[]> GetMeasurementsForStation(string stationId, int count);
+
+        /// <summary>
+        /// Gets the number of rainfall readings in "sinceHours" before the current date time
+        /// </summary>
+        /// <param name="sinceHours">The number of hours prior to the present time to retrieve readings for</param>
+        Task<RainfallReading[]> GetRainfallReadingsSince(int sinceHours);
     }
 }
