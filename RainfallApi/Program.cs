@@ -18,10 +18,6 @@ builder.Services.AddControllers(options =>
     options.ReturnHttpNotAcceptable = true;
 });
 
-builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
-    apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
-});
-
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
