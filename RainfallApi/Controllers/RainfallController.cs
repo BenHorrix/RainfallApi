@@ -63,12 +63,14 @@ namespace RainfallApi.Controllers
             }
         }
 
-        /*
+        /// <summary>
+        /// Provides a summary of the rainfall readings for a given station that occurs 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("summary")]
-        public async Task<IActionResult> Summary()
+        public async Task<IActionResult> Summary([Range(1, 72)]int sinceHours = 24)
         {
-
+            throw new NotImplementedException();
         }
-        */
     }
 }

@@ -96,5 +96,16 @@ namespace RainfallApi.Tests
             Assert.Equivalent(resultAsObjectResult.Value, new RainfallReadingResponse(expectedResultForStation));
             Assert.Equal(((RainfallReadingResponse)resultAsObjectResult.Value).Readings.Length, resultCount);
         }
+
+        [Fact]
+        public async void RainfallController_Summary_HasReadingsInTimeWindow_ReturnsExpectedReadings()
+        {
+            // Arrange
+            var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
+            var hoursSince
+
+            // Act
+            var result = await sut.Summary()
+        }
     }
 }
