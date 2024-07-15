@@ -118,7 +118,7 @@ namespace RainfallApi.Tests
             // Assert
             Assert.IsAssignableFrom<OkObjectResult>(result);
             var resultAsObjectResult = result as OkObjectResult;
-            Assert.Equal(mockReadingsAsArray, ((OkObjectResult)result).Value);
+            Assert.Equal(mockReadingsAsArray, resultAsObjectResult.Value);
         }
     }
 }
