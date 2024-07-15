@@ -22,7 +22,7 @@ namespace RainfallApi.Tests.Models
             Validator.TryValidateObject(request, validationContext, result, true);
 
             // Assert
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Contains(nameof(AddReadingRequest.DateMeasured), result[0].ErrorMessage);
         }
 
@@ -43,7 +43,7 @@ namespace RainfallApi.Tests.Models
             Validator.TryValidateObject(request, validationContext, result, true);
 
             // Assert
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Contains(nameof(AddReadingRequest.AmountMeasured), result[0].ErrorMessage);
         }
 
@@ -64,7 +64,7 @@ namespace RainfallApi.Tests.Models
             Validator.TryValidateObject(request, validationContext, result, true);
 
             // Assert
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Contains(nameof(AddReadingRequest.StationId), result[0].ErrorMessage);
         }
     }
