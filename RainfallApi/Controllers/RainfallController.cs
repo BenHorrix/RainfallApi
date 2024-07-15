@@ -61,7 +61,5 @@ namespace RainfallApi.Controllers
                 return result;
             }
         }
-
-        public async Task<IActionResult> AddReading()
     }
 }
