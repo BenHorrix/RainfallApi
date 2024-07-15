@@ -78,9 +78,10 @@ namespace RainfallApi.Tests
         {
             // Arrange
             var expectedResultsForStation = new List<RainfallReading>();
-            for(var i = 0; i < resultCount; i++)
+            var expectedValueSource = RainfallReading.Source.Government;
+            for (var i = 0; i < resultCount; i++)
             {
-                expectedResultsForStation.Add(new RainfallReading(DateTime.Now.AddDays(-1 * i), i));
+                expectedResultsForStation.Add(new RainfallReading(DateTime.Now.AddDays(-1 * i), i, expectedValueSource));
             }
             var expectedResultForStation = expectedResultsForStation.ToArray();
             var mockStationId = "1";
@@ -94,7 +95,9 @@ namespace RainfallApi.Tests
             // Assert
             Assert.NotNull(resultAsObjectResult);
             Assert.Equivalent(resultAsObjectResult.Value, new RainfallReadingResponse(expectedResultForStation));
-            Assert.Equal(((RainfallReadingResponse)resultAsObjectResult.Value).Readings.Length, resultCount);
+            var rainfallReadings = ((RainfallReadingResponse)resultAsObjectResult.Value).Readings;
+            Assert.Equal(resultCount, rainfallReadings.Length);
+            Assert.All(rainfallReadings, reading => Assert.Equal(RainfallReading.Source.Government, reading.ValueSource));
         }
     }
 }

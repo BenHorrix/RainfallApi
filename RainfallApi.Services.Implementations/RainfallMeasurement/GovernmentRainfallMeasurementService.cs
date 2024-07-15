@@ -25,7 +25,7 @@ namespace RainfallApi.Services.Implementations.RainfallMeasurement
             {
                 throw new UnexpectedGovernmentRainfallDataFormatException(resultBody, typeof(GovernmentRainfallMeasurement));
             }
-            return deserializedResult.Items.Select(i => new RainfallReading(i.DateTime, i.Value)).Take(count).ToArray();
+            return deserializedResult.Items.Select(i => new RainfallReading(i.DateTime, i.Value, RainfallReading.Source.Government)).Take(count).ToArray();
         }
 
         public Task AddMeasurementForStation(string stationId, RainfallReading newReading)
