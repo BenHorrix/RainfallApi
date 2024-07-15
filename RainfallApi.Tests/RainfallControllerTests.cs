@@ -105,19 +105,19 @@ namespace RainfallApi.Tests
         public async void RainfallController_AddUserReading_ReturnsCreatedAtResult()
         {
             // Arrange
-            var mockRequest = new AddReadingRequest(DateTime.UtcNow, 1.0m, "mockStationId");
+            var mockStationId = "1";
+            var mockRequest = new AddReadingRequest(DateTime.UtcNow, 1.0m);
             var mockNewId = 42;
-            _mockMeasurementService.Setup(m => m.AddMeasurementForStation(mockRequest.StationId, It.IsAny<RainfallReading>())).ReturnsAsync(new Services.RainfallMeasurement.Results.AddMeasurementResult(mockNewId));
+            _mockMeasurementService.Setup(m => m.AddMeasurementForStation(mockStationId, It.IsAny<RainfallReading>())).ReturnsAsync(new Services.RainfallMeasurement.Results.AddMeasurementResult(mockNewId));
             var sut = new RainfallController(_mockLogger.Object, _mockMeasurementService.Object);
 
             // Act
-            var result = await sut.AddUserReading(mockRequest);
+            var result = await sut.AddUserReading(mockStationId, mockRequest);
 
             // Assert
-            Assert.IsAssignableFrom<CreatedAtActionResult>(result);
-            var resultAsCreatedAtResult = (CreatedAtActionResult)result;
-            var routeValuesType = resultAsCreatedAtResult.Value.GetType();
-            Assert.Equal(mockNewId, routeValuesType.GetProperty("userReadingId").GetValue(resultAsCreatedAtResult.Value));
+            Assert.IsAssignableFrom<CreatedAtRouteResult>(result);
+            var resultAsCreatedAtResult = (CreatedAtRouteResult)result;
+            Assert.Equivalent(mockRequest, resultAsCreatedAtResult.Value);
         }
     }
 }

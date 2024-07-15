@@ -1,5 +1,7 @@
 using RainfallApi.Services.Implementations.RainfallMeasurement;
 using System.ComponentModel;
+using Moq;
+using RainfallApi.Services.RainfallMeasurement.Data;
 
 namespace RainfallApi.Services.Implementations.Tests
 {
@@ -11,7 +13,8 @@ namespace RainfallApi.Services.Implementations.Tests
         {
             // Arrange
             var stationIdWithKnownValues = "3680";
-            var sut = new GovernmentRainfallMeasurementService();
+            var mockDataService = new Mock<IRainfallMeasurementDataService>();
+            var sut = new GovernmentRainfallMeasurementService(mockDataService.Object);
             var expectedCount = 10;
 
             // Act
@@ -31,7 +34,8 @@ namespace RainfallApi.Services.Implementations.Tests
         {
             // Arrange
             var stationIdWithKnownValues = "invalidStationId";
-            var sut = new GovernmentRainfallMeasurementService();
+            var mockDataService = new Mock<IRainfallMeasurementDataService>();
+            var sut = new GovernmentRainfallMeasurementService(mockDataService.Object);
             var expectedCount = 0;
 
             // Act

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace RainfallApi.Models.Rainfall.Requests
 {
@@ -10,14 +12,11 @@ namespace RainfallApi.Models.Rainfall.Requests
         [Required]
         public decimal? AmountMeasured { get; set; }
 
-        [Required]
-        public string? StationId { get; set; }
 
-        public AddReadingRequest(DateTime dateMeasured, decimal amountMeasured, string stationId)
+        public AddReadingRequest(DateTime dateMeasured, decimal amountMeasured)
         {
             DateMeasured = dateMeasured;
             AmountMeasured = amountMeasured;
-            StationId = stationId;
         }
 
         public AddReadingRequest()

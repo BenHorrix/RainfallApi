@@ -13,7 +13,6 @@ namespace RainfallApi.Tests.Models
             {
                 DateMeasured = null,
                 AmountMeasured = 1.0m,
-                StationId = "test"
             };
             var result = new List<ValidationResult>();
             var validationContext = new ValidationContext(request, null, null);
@@ -33,8 +32,7 @@ namespace RainfallApi.Tests.Models
             var request = new AddReadingRequest()
             {
                 DateMeasured = DateTime.UtcNow,
-                AmountMeasured = null,
-                StationId = "test"
+                AmountMeasured = null
             };
             var result = new List<ValidationResult>();
             var validationContext = new ValidationContext(request, null, null);
@@ -45,27 +43,6 @@ namespace RainfallApi.Tests.Models
             // Assert
             Assert.Single(result);
             Assert.Contains(nameof(AddReadingRequest.AmountMeasured), result[0].ErrorMessage);
-        }
-
-        [Fact]
-        public void AddReadingRequest_NoStationId_IsNotValid()
-        {
-            // Arrange
-            var request = new AddReadingRequest()
-            {
-                DateMeasured = DateTime.UtcNow,
-                AmountMeasured = 1.0m,
-                StationId = null
-            };
-            var result = new List<ValidationResult>();
-            var validationContext = new ValidationContext(request, null, null);
-
-            // Act
-            Validator.TryValidateObject(request, validationContext, result, true);
-
-            // Assert
-            Assert.Single(result);
-            Assert.Contains(nameof(AddReadingRequest.StationId), result[0].ErrorMessage);
         }
     }
 }

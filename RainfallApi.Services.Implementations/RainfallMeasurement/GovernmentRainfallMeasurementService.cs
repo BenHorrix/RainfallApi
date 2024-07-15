@@ -4,15 +4,18 @@ using RainfallApi.Services.Implementations.RainfallMeasurement.Exceptions;
 using RainfallApi.Services.RainfallMeasurement;
 using Newtonsoft.Json;
 using RainfallApi.Services.RainfallMeasurement.Results;
+using RainfallApi.Services.RainfallMeasurement.Data;
 
 namespace RainfallApi.Services.Implementations.RainfallMeasurement
 {
     public class GovernmentRainfallMeasurementService : IRainfallMeasurementService
     {
+        private readonly IRainfallMeasurementDataService _dataService;
         private readonly HttpClient _httpClient;
 
-        public GovernmentRainfallMeasurementService()
+        public GovernmentRainfallMeasurementService(IRainfallMeasurementDataService dataService)
         {
+            _dataService = dataService;
             _httpClient = new HttpClient();
         }
 
@@ -31,7 +34,7 @@ namespace RainfallApi.Services.Implementations.RainfallMeasurement
 
         public Task<AddMeasurementResult> AddMeasurementForStation(string stationId, RainfallReading newReading)
         {
-            throw new NotImplementedException();
+            return _dataService.AddRainfallMeasurement(stationId, newReading.AmountMeasured, newReading.DateMeasured);
         }
     }
 }

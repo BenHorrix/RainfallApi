@@ -62,12 +62,13 @@ namespace RainfallApi.Controllers
             }
         }
 
-        public async Task<IActionResult> AddUserReading(AddReadingRequest request)
+        [HttpPost("add")]
+        public async Task<IActionResult> AddUserReading([FromRoute]string stationId, [FromBody]AddReadingRequest request)
         {
             try
             {
-                var result = await _rainfallMeasurementService.AddMeasurementForStation(request.StationId, new Models.Rainfall.RainfallReading(request.DateMeasured.Value, request.AmountMeasured.Value, Models.Rainfall.RainfallReading.Source.UserProvided));
-                return CreatedAtAction(nameof(GetUserReading), new { userReadingId = result.AddedReadingId });
+                var result = await _rainfallMeasurementService.AddMeasurementForStation(stationId, new Models.Rainfall.RainfallReading(request.DateMeasured.Value, request.AmountMeasured.Value, Models.Rainfall.RainfallReading.Source.UserProvided));
+                return CreatedAtRoute("GetUserReading", new { stationId, userReadingId = result.AddedReadingId }, request);
             }
             catch (Exception ex)
             {
@@ -79,7 +80,8 @@ namespace RainfallApi.Controllers
             }
         }
 
-        public async Task<IActionResult> GetUserReading(int userReadingId)
+        [HttpGet("userReadings/{userReadingId}", Name = "GetUserReading")]
+        public async Task<IActionResult> GetUserReading([FromRoute]string stationId, int userReadingId)
         {
             throw new NotImplementedException();
         }

@@ -1,15 +1,22 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RainfallApi.DocumentFilters;
 using RainfallApi.Services.Implementations.RainfallMeasurement;
+using RainfallApi.Services.Implementations.RainfallMeasurement.Data.EntityFramework;
+using RainfallApi.Services.Implementations.RainfallMeasurement.Data.EntityFramework.Contexts;
 using RainfallApi.Services.RainfallMeasurement;
+using RainfallApi.Services.RainfallMeasurement.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add dependency injection
-builder.Services.AddSingleton<IRainfallMeasurementService, GovernmentRainfallMeasurementService>();
+builder.Services.AddDbContext<RainfallMeasurementContext>(options => options.UseInMemoryDatabase("RainfallMeasurements"));
+builder.Services.AddScoped<IRainfallMeasurementService, GovernmentRainfallMeasurementService>();
+builder.Services.AddScoped<IRainfallMeasurementDataService, EntityFrameworkRainfallMeasurementDataService>();
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 // Add services to the container.
 
@@ -18,7 +25,6 @@ builder.Services.AddControllers(options =>
     options.ReturnHttpNotAcceptable = true;
 });
 
-builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
