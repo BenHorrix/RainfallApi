@@ -66,10 +66,11 @@ namespace RainfallApi.Controllers
         /// <summary>
         /// Provides a summary of the rainfall readings for a given station that occurs 
         /// </summary>
-        /// <returns></returns>
         [HttpGet("summary")]
+        [ProducesResponseType<RainfallReadingsSinceTimeResponse>(StatusCodes.Status200OK)]
         public async Task<IActionResult> Summary([Range(1, 72)]int sinceHours = 24)
         {
+            //var summary = _rainfallMeasurementService.GetRainfallReadingsSince(sinceHours);
             throw new NotImplementedException();
         }
     }
