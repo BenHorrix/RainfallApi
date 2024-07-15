@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using RainfallApi.Errors;
 using RainfallApi.Models.Error;
-using RainfallApi.Models.Rainfall;
+using RainfallApi.Models.Rainfall.Requests;
 using RainfallApi.Models.Rainfall.Responses;
 using RainfallApi.Services.RainfallMeasurement;
 
@@ -61,5 +61,7 @@ namespace RainfallApi.Controllers
                 return result;
             }
         }
+
+        public async Task<IActionResult> AddReading()
     }
 }

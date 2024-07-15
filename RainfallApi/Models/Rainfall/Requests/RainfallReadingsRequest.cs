@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace RainfallApi.Models.Rainfall
+namespace RainfallApi.Models.Rainfall.Requests
 {
     public class RainfallReadingsRequest
     {

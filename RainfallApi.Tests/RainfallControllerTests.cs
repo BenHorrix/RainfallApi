@@ -6,6 +6,7 @@ using RainfallApi.Controllers;
 using RainfallApi.Errors;
 using RainfallApi.Models.Error;
 using RainfallApi.Models.Rainfall;
+using RainfallApi.Models.Rainfall.Requests;
 using RainfallApi.Models.Rainfall.Responses;
 using RainfallApi.Services.RainfallMeasurement;
 
