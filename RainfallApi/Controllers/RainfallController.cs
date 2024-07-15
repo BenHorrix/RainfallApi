@@ -61,5 +61,27 @@ namespace RainfallApi.Controllers
                 return result;
             }
         }
+
+        public async Task<IActionResult> AddUserReading(AddReadingRequest request)
+        {
+            try
+            {
+                var result = await _rainfallMeasurementService.AddMeasurementForStation(request.StationId, new Models.Rainfall.RainfallReading(request.DateMeasured.Value, request.AmountMeasured.Value, Models.Rainfall.RainfallReading.Source.UserProvided));
+                return CreatedAtAction(nameof(GetUserReading), new { userReadingId = result.AddedReadingId });
+            }
+            catch (Exception ex)
+            {
+                var result = new ObjectResult(GenericErrors.UnexpectedError(ex.Message))
+                {
+                    StatusCode = 500
+                };
+                return result;
+            }
+        }
+
+        public async Task<IActionResult> GetUserReading(int userReadingId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

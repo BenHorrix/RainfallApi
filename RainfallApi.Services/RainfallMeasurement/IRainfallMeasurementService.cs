@@ -1,4 +1,5 @@
 ﻿using RainfallApi.Models.Rainfall;
+using RainfallApi.Services.RainfallMeasurement.Results;
 
 namespace RainfallApi.Services.RainfallMeasurement
 {
@@ -9,6 +10,6 @@ namespace RainfallApi.Services.RainfallMeasurement
     {
         Task<RainfallReading[]> GetMeasurementsForStation(string stationId, int count);
 
-        Task AddMeasurementForStation(string stationId, RainfallReading newReading);
+        Task<AddMeasurementResult> AddMeasurementForStation(string stationId, RainfallReading newReading);
     }
 }

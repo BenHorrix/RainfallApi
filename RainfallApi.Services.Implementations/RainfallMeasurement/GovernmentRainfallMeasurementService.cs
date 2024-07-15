@@ -3,6 +3,7 @@ using RainfallApi.Services.Implementations.RainfallMeasurement.DTO;
 using RainfallApi.Services.Implementations.RainfallMeasurement.Exceptions;
 using RainfallApi.Services.RainfallMeasurement;
 using Newtonsoft.Json;
+using RainfallApi.Services.RainfallMeasurement.Results;
 
 namespace RainfallApi.Services.Implementations.RainfallMeasurement
 {
@@ -28,7 +29,7 @@ namespace RainfallApi.Services.Implementations.RainfallMeasurement
             return deserializedResult.Items.Select(i => new RainfallReading(i.DateTime, i.Value, RainfallReading.Source.Government)).Take(count).ToArray();
         }
 
-        public Task AddMeasurementForStation(string stationId, RainfallReading newReading)
+        public Task<AddMeasurementResult> AddMeasurementForStation(string stationId, RainfallReading newReading)
         {
             throw new NotImplementedException();
         }
