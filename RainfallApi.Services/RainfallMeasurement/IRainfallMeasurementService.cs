@@ -8,5 +8,7 @@ namespace RainfallApi.Services.RainfallMeasurement
     public interface IRainfallMeasurementService
     {
         Task<RainfallReading[]> GetMeasurementsForStation(string stationId, int count);
+
+        Task AddMeasurementForStation(string stationId, RainfallReading newReading);
     }
 }
